@@ -1,0 +1,30 @@
+From 9bb30133b0b1ffd2945b15e02981894f73171122 Mon Sep 17 00:00:00 2001
+From: "Paul A. Patience" <paul@apatience.com>
+Date: Fri, 12 Jan 2024 04:53:57 -0500
+Subject: [PATCH 2/7] Define NETDB_INTERNAL and NETDB_SUCCESS if missing
+
+They are missing from musl libc.
+---
+ src/sockets/sockets.cc | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/sockets/sockets.cc b/src/sockets/sockets.cc
+index fbbf30c45d..80d3d3a65c 100644
+--- a/src/sockets/sockets.cc
++++ b/src/sockets/sockets.cc
+@@ -30,6 +30,12 @@ THE SOFTWARE.
+ #include <sys/un.h>
+ #include <sys/time.h>
+ #include <netdb.h>
++#ifndef NETDB_INTERNAL
++#define NETDB_INTERNAL (-1)
++#endif
++#ifndef NETDB_SUCCESS
++#define NETDB_SUCCESS (0)
++#endif
+ #include <string.h>
+ #include <unistd.h>
+ #include <netinet/in.h>
+-- 
+2.41.0
+

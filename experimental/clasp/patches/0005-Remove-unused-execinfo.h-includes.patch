@@ -1,0 +1,91 @@
+From 882eb8fe7d0e21e102aafa970bfdc2f92886af32 Mon Sep 17 00:00:00 2001
+From: "Paul A. Patience" <paul@apatience.com>
+Date: Fri, 12 Jan 2024 05:03:37 -0500
+Subject: [PATCH 5/7] Remove unused execinfo.h includes
+
+---
+ include/clasp/gctools/memoryManagement.h | 3 ---
+ src/core/debug_macosx.cc                 | 1 -
+ src/core/debug_unixes.cc                 | 1 -
+ src/core/debugger.cc                     | 1 -
+ src/gctools/gcFunctions.cc               | 1 -
+ src/gctools/threadlocal.cc               | 1 -
+ 6 files changed, 8 deletions(-)
+
+diff --git a/include/clasp/gctools/memoryManagement.h b/include/clasp/gctools/memoryManagement.h
+index 6248870f3b..caa0aeb701 100644
+--- a/include/clasp/gctools/memoryManagement.h
++++ b/include/clasp/gctools/memoryManagement.h
+@@ -22,9 +22,6 @@
+ // Define compile-time flags that effect structure sizes
+ //
+ #include <atomic>
+-#ifdef DEBUG_GUARD_BACKTRACE
+-#include <execinfo.h>
+-#endif
+ #include <clasp/gctools/configure_memory.h>
+ #include <clasp/gctools/hardErrors.h>
+ 
+diff --git a/src/core/debug_macosx.cc b/src/core/debug_macosx.cc
+index dfd1e926ac..a40fb175e9 100644
+--- a/src/core/debug_macosx.cc
++++ b/src/core/debug_macosx.cc
+@@ -26,7 +26,6 @@ THE SOFTWARE.
+ /* -^- */
+ 
+ #include <csignal>
+-#include <execinfo.h>
+ #include <dlfcn.h>
+ #include <clasp/core/foundation.h>
+ #include <clasp/core/object.h>
+diff --git a/src/core/debug_unixes.cc b/src/core/debug_unixes.cc
+index ba57d629d8..5867cb5261 100644
+--- a/src/core/debug_unixes.cc
++++ b/src/core/debug_unixes.cc
+@@ -27,7 +27,6 @@ THE SOFTWARE.
+ 
+ #include <csignal>
+ #include <iostream>
+-#include <execinfo.h>
+ #include <dlfcn.h>
+ #include <clasp/core/foundation.h>
+ #include <clasp/core/object.h>
+diff --git a/src/core/debugger.cc b/src/core/debugger.cc
+index 207ac399c1..11970c8787 100644
+--- a/src/core/debugger.cc
++++ b/src/core/debugger.cc
+@@ -28,7 +28,6 @@ THE SOFTWARE.
+ #define DEBUG_LEVEL_FULL
+ 
+ #include <csignal>
+-#include <execinfo.h>
+ #include <iomanip>
+ #include <clasp/core/foundation.h>
+ #include <dlfcn.h>
+diff --git a/src/gctools/gcFunctions.cc b/src/gctools/gcFunctions.cc
+index 53d5309d5b..e1dc53ead4 100644
+--- a/src/gctools/gcFunctions.cc
++++ b/src/gctools/gcFunctions.cc
+@@ -16,7 +16,6 @@ extern "C" {
+ int gcFunctions_after;
+ 
+ #include <stdint.h>
+-#include <execinfo.h>
+ #include <unistd.h>
+ #include <sstream>
+ #include <iomanip>
+diff --git a/src/gctools/threadlocal.cc b/src/gctools/threadlocal.cc
+index b26e616576..4c3e7d53de 100644
+--- a/src/gctools/threadlocal.cc
++++ b/src/gctools/threadlocal.cc
+@@ -6,7 +6,6 @@
+ #include <sys/types.h>
+ #include <sys/mman.h>
+ #include <signal.h>
+-#include <execinfo.h>
+ #include <clasp/core/foundation.h>
+ #include <clasp/gctools/threadlocal.h>
+ #include <clasp/core/lisp.h>
+-- 
+2.41.0
+

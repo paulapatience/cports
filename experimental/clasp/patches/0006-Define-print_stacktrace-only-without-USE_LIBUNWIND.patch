@@ -1,0 +1,44 @@
+From d5743abeb81408224fe005289d33fc9e4196cd25 Mon Sep 17 00:00:00 2001
+From: "Paul A. Patience" <paul@apatience.com>
+Date: Fri, 12 Jan 2024 05:05:30 -0500
+Subject: [PATCH 6/7] Define print_stacktrace only without USE_LIBUNWIND
+
+Because it uses execinfo.
+However, the function is unused, so it could be deleted.
+---
+ src/main/main.cc | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/main/main.cc b/src/main/main.cc
+index 867cd8da3c..81a8d9dcd6 100644
+--- a/src/main/main.cc
++++ b/src/main/main.cc
+@@ -45,7 +45,9 @@ THE SOFTWARE.
+ #include <signal.h>
+ #include <sys/resource.h>
+ #include <libgen.h>
++#ifndef USE_LIBUNWIND
+ #include <execinfo.h>
++#endif
+ #include <cxxabi.h>
+ #endif
+ 
+@@ -117,6 +119,7 @@ void initialize_llvm(int argc, char** argv);
+ 
+ // PRINT STACKTRACE PROGRAMMICALLY
+ 
++#ifndef USE_LIBUNWIND
+ static inline void print_stacktrace(FILE* out = stderr, unsigned int max_frames = 63) {
+   fprintf(out, "stack trace:\n");
+ 
+@@ -185,6 +188,7 @@ static inline void print_stacktrace(FILE* out = stderr, unsigned int max_frames
+   free(funcname);
+   free(symbollist);
+ }
++#endif
+ 
+ // ABORT FLAG HANDLING
+ 
+-- 
+2.41.0
+

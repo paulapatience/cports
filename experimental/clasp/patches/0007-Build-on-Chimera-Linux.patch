@@ -1,0 +1,43 @@
+From e3d9286313475521319bfdaefa52cd2f97e935aa Mon Sep 17 00:00:00 2001
+From: "Paul A. Patience" <paul@apatience.com>
+Date: Fri, 12 Jan 2024 05:16:50 -0500
+Subject: [PATCH 7/7] Build on Chimera Linux
+
+---
+ src/koga/config-header.lisp | 1 +
+ src/koga/units.lisp         | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/koga/config-header.lisp b/src/koga/config-header.lisp
+index bf8ca7496b..5734e4ce85 100644
+--- a/src/koga/config-header.lisp
++++ b/src/koga/config-header.lisp
+@@ -33,6 +33,7 @@
+                  "USE_MMTK" (eq :mmtk *variant-gc*)
+                  "USE_MPS" (eq :mps *variant-gc*)
+                  "USE_MPI" (mpi configuration)
++                 "USE_LIBUNWIND" t
+                  "RUNNING_PRECISEPREP" *variant-prep*
+                  "PROGRAM_CLASP" t
+                  "CLASP_THREADS" t
+diff --git a/src/koga/units.lisp b/src/koga/units.lisp
+index 012ea4f2ae..c96c54cbaa 100644
+--- a/src/koga/units.lisp
++++ b/src/koga/units.lisp
+@@ -208,11 +208,11 @@
+                                :type :cxxflags)
+   #+darwin (append-cflags configuration "-stdlib=libc++" :type :cxxflags)
+   #+darwin (append-cflags configuration "-I/usr/local/include")
+-  #+linux (append-cflags configuration "-fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fno-stack-protector -stdlib=libstdc++"
++  #+linux (append-cflags configuration "-fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fno-stack-protector"
+                                        :type :cxxflags)
+   #+linux (append-cflags configuration "-fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -fno-stack-protector"
+                                        :type :cflags)
+-  #+linux (append-ldlibs configuration "-ldl")
++  #+linux (append-ldlibs configuration "-ldl -lucontext")
+   (when (address-sanitizer configuration)
+     (append-cflags configuration "-fsanitize=address" :type :cxxflags)
+     (append-ldflags configuration "-fsanitize=address"))
+-- 
+2.41.0
+

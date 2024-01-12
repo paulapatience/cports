@@ -1,0 +1,26 @@
+From 3352011149c1e9b518cdea3e7a8c7bb6d84a4b9a Mon Sep 17 00:00:00 2001
+From: "Paul A. Patience" <paul@apatience.com>
+Date: Fri, 12 Jan 2024 04:52:09 -0500
+Subject: [PATCH 1/7] Use RTLD_DL_SYMENT only if defined
+
+It is missing from musl libc.
+---
+ src/core/foundation.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/core/foundation.cc b/src/core/foundation.cc
+index a228716b4f..c72261b8e9 100644
+--- a/src/core/foundation.cc
++++ b/src/core/foundation.cc
+@@ -1635,7 +1635,7 @@ void maybe_register_symbol_using_dladdr_ep(void* functionPointer, size_t size, c
+         return; // This means it's a virtual method.
+       global_pointerCount++;
+       Dl_info info;
+-#if defined(_TARGET_OS_LINUX)
++#ifdef RTLD_DL_SYMENT
+       const Elf64_Sym* extra_info;
+       int ret = dladdr1(functionPointer, &info, (void**)&extra_info, RTLD_DL_SYMENT);
+ #else
+-- 
+2.41.0
+

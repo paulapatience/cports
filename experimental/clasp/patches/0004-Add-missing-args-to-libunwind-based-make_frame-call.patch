@@ -1,0 +1,25 @@
+From 95e71c0920c0c869ab99df0df1de4082dde3f4bc Mon Sep 17 00:00:00 2001
+From: "Paul A. Patience" <paul@apatience.com>
+Date: Fri, 12 Jan 2024 05:00:00 -0500
+Subject: [PATCH 4/7] Add missing args to libunwind-based make_frame call
+
+---
+ src/core/backtrace.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/core/backtrace.cc b/src/core/backtrace.cc
+index 92d246dd2c..1fb08f3e24 100644
+--- a/src/core/backtrace.cc
++++ b/src/core/backtrace.cc
+@@ -672,7 +672,7 @@ __attribute__((optnone)) static T_mv lu_call_with_frame(std::function<T_mv(Debug
+   // is a pain in the ass for very little gain.
+   std::string sstring = lu_procname(&cursor)->get_std_string();
+   int fi(0);
+-  DebuggerFrame_sp bot = make_frame(fi++, (void*)ip, sstring.c_str(), (void*)fbp);
++  DebuggerFrame_sp bot = make_frame(fi++, (void*)ip, sstring.c_str(), (void*)fbp, bytecode_pc, bytecode_fp);
+   DebuggerFrame_sp prev = bot;
+   while (unw_step(&cursor) > 0) {
+     resip = unw_get_reg(&cursor, UNW_REG_IP, &ip);
+-- 
+2.41.0
+

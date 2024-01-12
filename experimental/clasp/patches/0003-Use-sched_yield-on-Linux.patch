@@ -1,0 +1,42 @@
+From 9dd7c2bc36bc8a5722d864af06f6294ba2809b19 Mon Sep 17 00:00:00 2001
+From: "Paul A. Patience" <paul@apatience.com>
+Date: Fri, 12 Jan 2024 04:55:51 -0500
+Subject: [PATCH 3/7] Use sched_yield on Linux
+
+pthread_yield is missing from musl libc, and the pthread_yield manual
+page recommends replacing it with sched_yield anyway.
+---
+ src/core/hashTable.cc | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/core/hashTable.cc b/src/core/hashTable.cc
+index 0639c443fd..b16f0b8f1a 100644
+--- a/src/core/hashTable.cc
++++ b/src/core/hashTable.cc
+@@ -95,8 +95,12 @@ THE SOFTWARE.
+ #include <clasp/core/weakHashTable.h>
+ #include <clasp/core/wrappers.h>
+ #ifdef CLASP_THREADS
++#ifdef _TARGET_OS_LINUX
++#include <sched.h>
++#else
+ #include <pthread.h>
+ #endif
++#endif
+ namespace core {
+ 
+ std::atomic<size_t> global_next_hash_table_id;
+@@ -1121,7 +1125,9 @@ KeyValuePair* HashTable_O::rehash_upgrade_write_lock(bool expandTable, T_sp find
+       this->_Mutex->write_unlock(false /*releaseReadLock*/);
+       return result;
+     }
+-#ifdef _TARGET_OS_DARWIN
++#if defined(_TARGET_OS_LINUX)
++    sched_yield();
++#elif defined(_TARGET_OS_DARWIN)
+     pthread_yield_np();
+ #else
+     pthread_yield();
+-- 
+2.41.0
+
