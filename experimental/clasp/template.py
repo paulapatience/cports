@@ -3,11 +3,10 @@ pkgver = "2.5.0"
 pkgrel = 0
 # archs = ["aarch64", "x86_64"]  # TODO: check
 hostmakedepends = [
-    "git",
     "ninja",
     "pkgconf",
     "sbcl",
-]  # TODO: may be able to remove git
+]
 makedepends = [
     "boost-devel",
     "clang-devel",
@@ -102,13 +101,13 @@ sha256 = [
 ]
 options = [
     "!cross",
-    "!strip",
+    # "!strip",
 ]  # TODO: !strip? Arch package has it, may not be necessary
 
 
-def init_configure(self):
-    # TODO: Better place for this? Also, better location for the translations?
-    self.env["ASDF_OUTPUT_TRANSLATIONS"] = f"/:{self.chroot_cwd}/cache/"
+# def init_configure(self):
+#     # TODO: Better place for this? Also, better location for the translations?
+#     self.env["ASDF_OUTPUT_TRANSLATIONS"] = f"/:{self.chroot_cwd}/cache/"
 
 
 def do_configure(self):
@@ -121,7 +120,6 @@ def do_configure(self):
         "--lib-path=/usr/lib/clasp",
         "--share-path=/usr/share/clasp",
         f"--package-path={self.chroot_destdir}",
-        "--unwinder=llvm",  # XXX: Unused in build for now
         "--ld=lld",
     )
 
@@ -135,9 +133,8 @@ def do_build(self):
 
 
 def do_check(self):
-    # TODO: enable
-    # self.do("ninja", "-C", "build", "test-clasp")
-    pass
+    self.do("ninja", "-C", "build", "test")
+    self.do("ninja", "-C", "build", "ansi-test")
 
 
 def do_install(self):
