@@ -1,12 +1,12 @@
-From e3d9286313475521319bfdaefa52cd2f97e935aa Mon Sep 17 00:00:00 2001
+From 65f76ed6a8bff99e0803243b168572b1f3827a64 Mon Sep 17 00:00:00 2001
 From: "Paul A. Patience" <paul@apatience.com>
 Date: Fri, 12 Jan 2024 05:16:50 -0500
-Subject: [PATCH 7/7] Build on Chimera Linux
+Subject: [PATCH] Build on Chimera Linux
 
 ---
  src/koga/config-header.lisp | 1 +
- src/koga/units.lisp         | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ src/koga/units.lisp         | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/src/koga/config-header.lisp b/src/koga/config-header.lisp
 index bf8ca7496b..5734e4ce85 100644
@@ -21,9 +21,18 @@ index bf8ca7496b..5734e4ce85 100644
                   "PROGRAM_CLASP" t
                   "CLASP_THREADS" t
 diff --git a/src/koga/units.lisp b/src/koga/units.lisp
-index 012ea4f2ae..c96c54cbaa 100644
+index 012ea4f2ae..36c2ddfb2b 100644
 --- a/src/koga/units.lisp
 +++ b/src/koga/units.lisp
+@@ -143,7 +143,7 @@
+     (message :emph "Configuring git")
+     (setf git (configure-program "git"
+                                  (or git #P"git")
+-                                 :required t))))
++                                 :required nil))))
+ 
+ (defmethod configure-unit (configuration (unit (eql :objcopy)))
+   "Find the objcopy binary."
 @@ -208,11 +208,11 @@
                                 :type :cxxflags)
    #+darwin (append-cflags configuration "-stdlib=libc++" :type :cxxflags)

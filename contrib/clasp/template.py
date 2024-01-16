@@ -99,15 +99,16 @@ sha256 = [
     "c7f03093f72190cf5ed427886006b72ab8ca1f45b509c0cb9c8f97cee497d7d3",
     "18091d5f3cb7008b0432016390ff437b9d1d76c10b92c8e63ff63f0c1331b030",
 ]
+# env = {"ASDF_OUTPUT_TRANSLATIONS": "/:/tmp/cache/"}
 options = [
     "!cross",
     # "!strip",
 ]  # TODO: !strip? Arch package has it, may not be necessary
 
 
-# def init_configure(self):
-#     # TODO: Better place for this? Also, better location for the translations?
-#     self.env["ASDF_OUTPUT_TRANSLATIONS"] = f"/:{self.chroot_cwd}/cache/"
+def init_configure(self):
+    # TODO: Better place for this? Also, better location for the translations?
+    self.env["ASDF_OUTPUT_TRANSLATIONS"] = f"/:{self.chroot_cwd}/cache/"
 
 
 def do_configure(self):
